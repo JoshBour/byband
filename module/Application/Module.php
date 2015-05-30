@@ -11,6 +11,7 @@ namespace Application;
 
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
+use Zend\Session\Config\SessionConfig;
 use Zend\Session\Container;
 
 class Module
@@ -28,11 +29,14 @@ class Module
     }
 
     public function bootstrapSession(MvcEvent $e){
+        /**
+         * @var \Zend\Session\SessionManager $session
+         */
         $session = $e->getApplication()
                     ->getServiceManager()
                     ->get('Zend\Session\SessionManager');
-        $session->start();
 
+        $session->start();
         $container = new Container('initialized');
         if(!isset($container->init)){
             $session->regenerateId(true);

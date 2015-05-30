@@ -59,27 +59,20 @@ return array(
             'Zend\Log\LoggerAbstractServiceFactory',
             'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
         ),
-        'invokables' => array(
-            'authStorage' => __NAMESPACE__ . '\Model\AuthStorage',
-        ),
         'factories' => array(
             'Zend\Session\SessionManager' => __NAMESPACE__ . '\Factory\SessionManagerFactory',
-            'Zend\Authentication\AuthenticationService' => __NAMESPACE__ . '\Factory\AuthFactory',
         ),
         'aliases' => array(
             'translator' => 'MvcTranslator',
-            'auth_service' => 'Zend\Authentication\AuthenticationService'
         ),
     ),
     'controller_plugins' => array(
         'factories' => array(
-            'admin' => __NAMESPACE__ . '\Factory\AdminPluginFactory',
             'translate' => __NAMESPACE__ . '\Factory\TranslatePluginFactory',
         )
     ),
     'view_helpers' => array(
         'factories' => array(
-            'admin' => __NAMESPACE__ . '\Factory\AdminViewHelperFactory',
             'actionName' => __NAMESPACE__ . '\Factory\ActionNameHelperFactory'
         ),
         'invokables' => array(

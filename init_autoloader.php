@@ -13,7 +13,7 @@
  * new developers to be productive with a fresh skeleton. It allows autoloading
  * to be correctly configured, regardless of the installation method and keeps
  * the use of composer completely optional. This setup should work fine for
- * most users, however, feel free to configure autoloading however you'd like.
+ * most user, however, feel free to configure autoloading however you'd like.
  */
 
 // Composer autoloading
@@ -51,4 +51,10 @@ if ($zf2Path) {
 
 if (!class_exists('Zend\Loader\AutoloaderFactory')) {
     throw new RuntimeException('Unable to load ZF2. Run `php composer.phar install` or define a ZF2_PATH environment variable.');
+}
+
+
+// Require the password compatibility library for PHP < 5.5
+if(file_exists('vendor/ircmaxell/password-compat-lib/password.php')){
+    include_once('vendor/ircmaxell/password-compat-lib/password.php');
 }
