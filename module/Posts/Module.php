@@ -5,7 +5,7 @@
  * Date: 30/5/2015
  * Time: 4:38 μμ
  */
-namespace Artists;
+namespace Posts;
 
 class Module {
     public function getConfig()

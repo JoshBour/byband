@@ -77,12 +77,6 @@ return array(
             'translate' => __NAMESPACE__ . '\Factory\TranslatePluginFactory',
         )
     ),
-    'controller_plugins' => array(
-        'factories' => array(
-            'admin' => __NAMESPACE__ . '\Factory\AdminPluginFactory',
-            'translate' => __NAMESPACE__ . '\Factory\TranslatePluginFactory',
-        )
-    ),
     'view_helpers' => array(
         'factories' => array(
             'admin' => __NAMESPACE__ . '\Factory\AdminViewHelperFactory',
