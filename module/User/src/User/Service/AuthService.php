@@ -10,12 +10,22 @@ namespace User\Service;
 
 
 use Application\Service\BaseService;
+use Doctrine\ORM\EntityRepository;
 use User\Entity\User;
+use Zend\Mvc\Controller\Plugin\FlashMessenger;
 
+/**
+ * Class AuthService
+ * @package User\Service
+ * @method EntityRepository getUserRepository($namespace)
+ */
 class AuthService extends BaseService{
-    private $messages;
 
     private $authStorage;
+
+    private $flashMessenger;
+
+    private $messages;
 
     private $zendAuthService;
 
@@ -31,13 +41,43 @@ class AuthService extends BaseService{
         if ($form->isValid()) {
             return $this->authenticate($user->getUsername(), $user->getPassword(), $data['user']['remember']);
         }else{
-          //  $this->messages[] = $form->getMessages();
             return false;
         }
     }
 
-    public function register(){
+    /**
+     * @param \Zend\Form\Form $form
+     * @param $data
+     * @return bool
+     */
+    public function register($form, $data){
+        $user = new User();
+        $vocabulary = $this->getVocabulary();
+        $translator = $this->getTranslator();
+        $rawPassword = $data['user']['password'];
+        $form->bind($user);
+        $form->setData($data);
+        if($form->isValid()){
+            if($rawPassword != $data['user']['repassword']){
+                $this->getFlashMessenger()->addMessage($translator->translate($vocabulary['ERROR_PASSWORD_MISMATCH']));
+                return false;
+            }
 
+            $em = $this->getEntityManager();
+            $user->setPassword(User::hashPassword($rawPassword));
+            $user->setRegisterDate(new \DateTime("now"));
+            try {
+                $em->persist($user);
+                $em->flush();
+            }catch (\Exception $e){
+                $this->getFlashMessenger()->addMessage($e->getMessage());
+                return false;
+            }
+            // we authenticate using the raw password
+            return $this->authenticate($user->getUsername(), $rawPassword, 1);
+        }else{
+            return false;
+        }
     }
 
     private function authenticate($username,$password,$remember){
@@ -60,10 +100,10 @@ class AuthService extends BaseService{
             $identity = $authResult->getIdentity();
             $authService->getStorage()->write($identity);
         } else {
-            $this->messages[] = $translator->translate($vocabulary["MESSAGE_INVALID_CREDENTIALS"]);
+            $this->getFlashMessenger()->addMessage($translator->translate($vocabulary["MESSAGE_INVALID_CREDENTIALS"]));
             return false;
         }
-        $this->messages[] = $translator->translate($vocabulary["MESSAGE_WELCOME"]) . ', ' . $username;
+        $this->getFlashMessenger()->addMessage($translator->translate($vocabulary["MESSAGE_WELCOME"]) . ', ' . $username);
         return true;
     }
 
@@ -75,6 +115,15 @@ class AuthService extends BaseService{
         if(null == $this->authStorage)
             $this->authStorage = $this->getServiceManager()->get('authStorage');
         return $this->authStorage;
+    }
+
+    /**
+     * @return FlashMessenger
+     */
+    private function getFlashMessenger(){
+        if(null == $this->flashMessenger)
+            $this->flashMessenger = $this->getServiceManager()->get('ControllerPluginManager')->get('flashMessenger');
+        return $this->flashMessenger;
     }
 
     private function getZendAuthService(){

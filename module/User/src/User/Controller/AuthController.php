@@ -41,6 +41,13 @@ class AuthController extends BaseController{
     private $loginForm;
 
     /**
+     * The register form
+     *
+     * @var \Zend\Form\Form
+     */
+    private $registerForm;
+
+    /**
      * The zend authentication service.
      *
      * @var AuthenticationService
@@ -49,13 +56,12 @@ class AuthController extends BaseController{
 
     /**
      * The login action
-     * Route: /
+     * Route: /login
      *
      * @return mixed|\Zend\Http\Response|ViewModel
      */
     public function loginAction()
     {
-        $this->getAuthStorage()->info();
         if (!$this->identity()) {
             $loginForm = $this->getLoginForm();
             /**
@@ -67,14 +73,12 @@ class AuthController extends BaseController{
                 $authService = $this->getAuthService();
                 $success = $authService->login($loginForm,$data);
                 if($success){
-                    $this->flashMessenger()->addMessage($authService->getMessages());
                     return $this->redirect()->toRoute(self::ROUTE_HOME);
                 }
-                var_dump($authService->getMessages());
             }
             return new ViewModel(array(
                 'form' => $loginForm,
-                "pageTitle" => "Admin Login",
+                "pageTitle" => "Login",
                 "noAds" => true,
                 "hideHeader" => true
             ));
@@ -83,8 +87,36 @@ class AuthController extends BaseController{
         }
     }
 
+    /**
+     * The register action
+     * Route: /register
+     *
+     * @return mixed|\Zend\Http\Response|ViewModel
+     */
     public function registerAction(){
+        if(!$this->identity()){
+            $registerForm = $this->getRegisterForm();
+            /**
+             * @var $request \Zend\Http\Request
+             */
+            $request = $this->getRequest();
+            if($request->isPost()){
+                $data = $request->getPost();
+                $authService = $this->getAuthService();
+                $success = $authService->register($registerForm,$data);
+                if($success)
+                    return $this->redirect()->toRoute(self::ROUTE_HOME);
+            }
 
+            return new ViewModel(array(
+                'form' => $registerForm,
+                "pageTitle" => "Register",
+                "noAds" => true,
+                "hideHeader" => true
+            ));
+        } else {
+            return $this->redirect()->toRoute(self::ROUTE_HOME);
+        }
     }
 
     /**
@@ -102,6 +134,11 @@ class AuthController extends BaseController{
         return $this->redirect()->toRoute(static::ROUTE_LOGIN);
     }
 
+    /**
+     * Get the auth service
+     *
+     * @return \User\Service\AuthService
+     */
     public function getAuthService(){
         if(null === $this->authService)
             $this->authService = $this->getServiceLocator()->get('authService');
@@ -131,6 +168,12 @@ class AuthController extends BaseController{
         if (null === $this->loginForm)
             $this->loginForm = $this->getServiceLocator()->get('loginForm');
         return $this->loginForm;
+    }
+
+    public function getRegisterForm(){
+        if(null === $this->registerForm)
+            $this->registerForm = $this->getServiceLocator()->get('registerForm');
+        return $this->registerForm;
     }
 
     /**

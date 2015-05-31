@@ -1,10 +1,8 @@
 <?php
-    if($this->flashMessenger()->hasMessages()){
-        echo $this->flashMessenger()->render(\Zend\Mvc\Controller\Plugin\FlashMessenger::NAMESPACE_DEFAULT,array('flashMessages'));
-    }
+    echo $this->showMessages();
 ?>
 <div id="login">
-    <h1><?php echo $this->translate("Login"); ?></h1>
+    <h1><?php echo $this->translate("Register"); ?></h1>
     <?php
     /**
      * @var \Zend\Form\Form $form
@@ -14,16 +12,22 @@
      * @var \Zend\Form\Fieldset $fieldset
      */
     $fieldset = $form->get('user');
-    $form->setAttribute('action', $this->url('login'));
+    $form->setAttribute('action', $this->url('register'));
 
     echo $this->form()->openTag($form);
-//        echo $this->formHidden($form->get('security'));
     ?>
     <div class="element">
         <?php
         echo $this->formElementErrors($fieldset->get('username'), array('class' => 'formError'));
         echo $this->formLabel($fieldset->get('username'));
         echo $this->formInput($fieldset->get('username'));
+        ?>
+    </div>
+    <div class="element">
+        <?php
+        echo $this->formElementErrors($fieldset->get('email'), array('class' => 'formError'));
+        echo $this->formLabel($fieldset->get('email'));
+        echo $this->formEmail($fieldset->get('email'));
         ?>
     </div>
     <div class="element">
@@ -35,11 +39,11 @@
     </div>
     <div class="element">
         <?php
-        echo $this->formElementErrors($fieldset->get('remember'), array('class' => 'formError'));
-        echo $this->formLabel($fieldset->get('remember'));
-        echo $this->formCheckbox($fieldset->get('remember'));
+        echo $this->formElementErrors($fieldset->get('repassword'), array('class' => 'formError'));
+        echo $this->formLabel($fieldset->get('repassword'));
+        echo $this->formPassword($fieldset->get('repassword'));
         ?>
     </div>
-    <?php echo $this->formSubmit($form->get('submit')->setValue($this->translate('Login'))); ?>
+    <?php echo $this->formSubmit($form->get('submit')->setValue($this->translate('Register'))); ?>
     <?php echo $this->form()->closeTag() ?>
 </div>

@@ -7,11 +7,6 @@ use Zend\Session\SessionManager;
 
 class AuthStorage extends Session
 {
-    public function info(){
-        echo "<pre>";
-        var_dump($this->session->getManager()->getConfig());
-        echo "</pre>";
-    }
 
     /**
      * Sets the remember me time for the logged admin.

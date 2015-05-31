@@ -36,6 +36,16 @@ return array(
                     )
                 )
             ),
+            'register' => array(
+                'type' => 'Literal',
+                'options' => array(
+                    'route' => '/register',
+                    'defaults' => array(
+                        'controller' => __NAMESPACE__ . '\Controller\Auth',
+                        'action' => 'register'
+                    )
+                )
+            ),
             'logout' => array(
                 'type' => 'Literal',
                 'options' => array(
@@ -96,6 +106,7 @@ return array(
         ),
         'factories' => array(
             'loginForm' => __NAMESPACE__ . '\Factory\LoginFormFactory',
+            'registerForm' => __NAMESPACE__ . '\Factory\RegisterFormFactory',
             'Zend\Authentication\AuthenticationService' => __NAMESPACE__ . '\Factory\AuthFactory',
         ),
         'aliases' => array(

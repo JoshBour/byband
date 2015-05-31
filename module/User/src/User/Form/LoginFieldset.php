@@ -71,9 +71,9 @@ class LoginFieldset extends BaseFieldset implements InputFilterProviderInterface
                         'name' => 'StringLength',
                         'options' => array(
                             'min' => 4,
-                            'max' => 15,
+                            'max' => 25,
                             'messages' => array(
-                                StringLength::INVALID => $this->getTranslator()->translate($vocabulary["ERROR_USERNAME_INVALID"])
+                                StringLength::INVALID => $this->getTranslator()->translate($vocabulary["ERROR_USERNAME_INVALID_LENGTH"])
                             )
                         )
                     ),
@@ -99,9 +99,9 @@ class LoginFieldset extends BaseFieldset implements InputFilterProviderInterface
                         'name' => 'StringLength',
                         'options' => array(
                             'min' => 4,
-                            'max' => 15,
+                            'max' => 20,
                             'messages' => array(
-                                StringLength::INVALID => $this->getTranslator()->translate($vocabulary["ERROR_PASSWORD_INVALID"])
+                                StringLength::INVALID => $this->getTranslator()->translate($vocabulary["ERROR_PASSWORD_INVALID_LENGTH"])
                             )
                         )
                     ),

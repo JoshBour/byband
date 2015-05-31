@@ -3,14 +3,14 @@ namespace User\Form;
 
 use Zend\Form\Form;
 
-class LoginForm extends Form
+class RegisterForm extends Form
 {
     /**
-     * The login form constructor
+     * The registerform constructor
      */
     public function __construct()
     {
-        parent::__construct('loginForm');
+        parent::__construct('registerForm');
 
         $this->setAttributes(array(
             'method' => 'post',
@@ -31,7 +31,9 @@ class LoginForm extends Form
 //            'security',
             'user' => array(
                 'username',
-                'password'
+                'email',
+                'password',
+                'repassword'
             )
         ));
     }
