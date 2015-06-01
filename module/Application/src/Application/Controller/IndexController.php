@@ -15,6 +15,11 @@ class IndexController extends BaseController
 {
     public function indexAction()
     {
+        $artists = $this->getEntityManager()->getRepository('\Artist\Entity\Artist')->findAll();
+
+        $user = $this->getEntityManager()->getRepository('\User\Entity\User')->find(5);
+
+        var_dump($user->getFriendList()[1]->getUserId());
         return new ViewModel();
     }
 }

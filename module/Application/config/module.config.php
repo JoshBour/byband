@@ -73,11 +73,10 @@ return array(
     ),
     'view_helpers' => array(
         'factories' => array(
-            'actionName' => __NAMESPACE__ . '\Factory\ActionNameHelperFactory',
-            'showMessages' => __NAMESPACE__ . '\Factory\ShowMessagesHelperFactory'
+            'actionName' => __NAMESPACE__ . '\Factory\ActionNameHelperFactory'
         ),
         'invokables' => array(
-            'mobile' => __NAMESPACE__ . '\View\Helper\Mobile',
+            'mobile' => 'Application\View\Helper\Mobile',
         )
     ),
     'controllers' => array(
